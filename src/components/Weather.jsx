@@ -41,7 +41,7 @@ export default function Weather({ location, triggerFetch }) {
 
       setWeatherData(data);
 
-      // Decide background image based on weather description
+    
       const desc =
         data.weather && data.weather[0] && data.weather[0].description
           ? data.weather[0].description.toLowerCase()
