@@ -9,7 +9,7 @@ export default function Weather({ location, triggerFetch }) {
 
   // Helper to set background and save to localStorage
   const setBodyBackground = (imagePath) => {
-    document.body.style.backgroundImage = `url(${imagePath})`;
+    document.body.style.backgroundImage = `url(${import.meta.env.PUBLIC_URL + imagePath})`;
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
     document.body.style.backgroundRepeat = "no-repeat";
