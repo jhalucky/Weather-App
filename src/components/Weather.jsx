@@ -9,20 +9,25 @@ export default function Weather({ location, triggerFetch }) {
 
   // Helper to set background and save to localStorage
   const setBodyBackground = (imagePath) => {
-    document.body.style.backgroundImage = `url(${imagePath})`;
+    // Ensure the image path is properly resolved relative to the base URL
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const fullImagePath = `${baseUrl}${imagePath}`;
+    document.body.style.backgroundImage = `url(${fullImagePath})`;
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
     document.body.style.backgroundRepeat = "no-repeat";
-    localStorage.setItem("bgImage", imagePath);
+    localStorage.setItem("bgImage", fullImagePath);
   };
 
   // Apply background instantly from localStorage on first load
   useEffect(() => {
     const savedBg = localStorage.getItem("bgImage");
     if (savedBg) {
-      // Fix old absolute paths that might be stored in localStorage
-      const fixedBg = savedBg.startsWith("/") ? savedBg.substring(1) : savedBg;
-      setBodyBackground(fixedBg);
+      // If we have a saved background, apply it directly
+      document.body.style.backgroundImage = `url(${savedBg})`;
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
+      document.body.style.backgroundRepeat = "no-repeat";
     }
   }, []);
 
