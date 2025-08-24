@@ -21,7 +21,7 @@ export default function Appui() {
   return (
 
     <div className="flex flex-col items-center min-h-screen p-4 sm:p-8">
-      <div className="bg-amber-300 w-full max-w-3xl rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+      <div className="bg-amber-300 w-full max-w-3xl rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 box">
         <h1 className="text-2xl sm:text-3xl font-bold flex-1 text-center sm:text-left">
           Weather App
         </h1>
