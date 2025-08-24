@@ -9,7 +9,7 @@ export default function Weather({ location, triggerFetch }) {
 
   // Helper to set background and save to localStorage
   const setBodyBackground = (imagePath) => {
-    document.body.style.backgroundImage = `url(${import.meta.env.PUBLIC_URL + imagePath})`;
+    document.body.style.backgroundImage = `url(${imagePath})`;
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
     document.body.style.backgroundRepeat = "no-repeat";
@@ -20,7 +20,9 @@ export default function Weather({ location, triggerFetch }) {
   useEffect(() => {
     const savedBg = localStorage.getItem("bgImage");
     if (savedBg) {
-      setBodyBackground(savedBg);
+      // Fix old absolute paths that might be stored in localStorage
+      const fixedBg = savedBg.startsWith("/") ? savedBg.substring(1) : savedBg;
+      setBodyBackground(fixedBg);
     }
   }, []);
 
@@ -34,7 +36,7 @@ export default function Weather({ location, triggerFetch }) {
       if (!data || data.cod !== 200) {
         setError("Could not fetch weather");
         setWeatherData(null);
-        setBodyBackground("/default.jpg");
+        setBodyBackground("default.jpg");
         setLoading(false);
         return;
       }
@@ -48,17 +50,19 @@ export default function Weather({ location, triggerFetch }) {
           : "";
 
       const bgMap = [
-        { keywords: ["sunny", "clear"], image: "/sunny.jpg" },
-        { keywords: ["cloud", "overcast"], image: "/cloudy.jpg" },
-        { keywords: ["rain", "drizzle"], image: "/rain.jpg" },
-        { keywords: ["snow"], image: "/snow.jpg" },
+        { keywords: ["sunny", "clear"], image: "sunny.jpg" },
+        { keywords: ["cloud", "overcast"], image: "cloudy.jpg" },
+        { keywords: ["rain", "drizzle", "shower"], image: "rain.jpg" },
+        { keywords: ["snow"], image: "snow.jpg" },
+        { keywords: ["thunderstorm", "storm"], image: "thunderstorm.jpg" },
+        { keywords: ["mist", "fog", "haze"], image: "mist.jpg" },
       ];
 
       const matched = bgMap.find(({ keywords }) =>
         keywords.some((word) => desc.includes(word))
       );
 
-      setBodyBackground(matched ? matched.image : "/default.jpg");
+      setBodyBackground(matched ? matched.image : "default.jpg");
       setLoading(false);
     };
 
@@ -72,12 +76,12 @@ export default function Weather({ location, triggerFetch }) {
         },
         () => {
           setError("Location permission denied or unavailable");
-          setBodyBackground("/default.jpg");
+          setBodyBackground("default.jpg");
         }
       );
     } else {
       setError("Geolocation not supported by your browser");
-      setBodyBackground("/default.jpg");
+      setBodyBackground("default.jpg");
     }
   }, [location, triggerFetch]);
 
