@@ -1,9 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite' 
+import tailwindcss from '@tailwindcss/vite'
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  base: '/Weather-App/',
+export default defineConfig(({ mode }) => {
+  const isGithub = mode === 'github' || process.env.VITE_DEPLOY_TARGET === 'github'
+
+  return {
+    plugins: [react(), tailwindcss()],
+    base: isGithub ? '/Weather-App/' : '/',
+  }
 })
